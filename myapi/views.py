@@ -7,11 +7,13 @@ from rest_framework.filters import SearchFilter
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework import status
 from rest_framework.response import Response
+from myapi.pagination import EssayPageNumberPagination
 
 class EssayViewSet(viewsets.ModelViewSet):
     queryset = Essay.objects.all()
     serializer_class = EssaySerializer
     permission_classes = [IsAuthenticated]
+    pagination_class = EssayPageNumberPagination
 
     filter_backends = [SearchFilter]
     search_fields = ('title', 'content')
