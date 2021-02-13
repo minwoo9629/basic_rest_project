@@ -34,6 +34,22 @@ class EssayViewSet(viewsets.ModelViewSet):
 class AlbumViewSet(viewsets.ModelViewSet):
     queryset = Album.objects.all()
     serializer_class = AlbumSerializer
+    permission_classes = [IsAuthenticated]
+
+    filter_backends = [SearchFilter]
+    search_fields = ('description',)
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        if self.request.user.is_authenticated:
+            if self.request.user.is_staff:
+                pass
+            else:
+                qs = qs.filter(author=self.request.user)
+        else:
+            qs = qs.none()
+
+        return qs
 
     def perform_create(self, serializers):
         serializers.save(author=self.request.user)
@@ -41,6 +57,22 @@ class AlbumViewSet(viewsets.ModelViewSet):
 class FilesViewSet(viewsets.ModelViewSet):
     queryset = Files.objects.all()
     serializer_class = FilesSerializer
+    permission_classes = [IsAuthenticated]
+
+    filter_backends = [SearchFilter]
+    search_fields = ('description',)
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        if self.request.user.is_authenticated:
+            if self.request.user.is_staff:
+                pass
+            else:
+                qs = qs.filter(author=self.request.user)
+        else:
+            qs = qs.none()
+
+        return qs
 
     # 파일 업로드를 위한
     # parser_class 지정
