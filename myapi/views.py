@@ -3,6 +3,7 @@ from rest_framework import viewsets
 from myapi.models import Essay, Album, Files
 from myapi.serializers import EssaySerializer, AlbumSerializer, FilesSerializer
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 from rest_framework.filters import SearchFilter
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework import status
@@ -12,6 +13,7 @@ from myapi.pagination import EssayPageNumberPagination
 class EssayViewSet(viewsets.ModelViewSet):
     queryset = Essay.objects.all()
     serializer_class = EssaySerializer
+    authentication_classes = [TokenAuthentication, SessionAuthentication]
     permission_classes = [IsAuthenticated]
     pagination_class = EssayPageNumberPagination
 
